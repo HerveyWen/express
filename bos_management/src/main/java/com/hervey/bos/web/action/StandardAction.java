@@ -2,9 +2,8 @@ package com.hervey.bos.web.action;
 
 import com.hervey.bos.entity.base.Standard;
 import com.hervey.bos.service.StandardService;
+import com.hervey.bos.web.action.common.BaseAction;
 import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
 import org.apache.struts2.convention.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -13,9 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created on 2017/12/5.
@@ -28,11 +25,8 @@ import java.util.Map;
 @Actions
 @Controller
 @Scope(value = "prototype")
-public class StandardAction extends ActionSupport implements ModelDriven<Standard> {
+public class StandardAction extends BaseAction<Standard> {
 
-
-    // 接收的取派标准实体参数
-    private Standard standard = new Standard();
 
     //业务处理对象
     @Autowired
@@ -46,11 +40,9 @@ public class StandardAction extends ActionSupport implements ModelDriven<Standar
      */
     @Action(value = "standard_save", results = {@Result(type = "redirect", location = "/pages/base/standard.html")})
     public String save() throws Exception {
-        System.out.println("--->" + standard);
-        standardService.save(standard);
+        standardService.save(model);
         return SUCCESS;
     }
-
 
     /**
      * 校验取派标准名称
@@ -60,7 +52,7 @@ public class StandardAction extends ActionSupport implements ModelDriven<Standar
      */
     @Action(value = "standard_validate", results = {@Result(type = "json")})
     public String validateName() throws Exception {
-        List<Standard> standards = standardService.findByName(standard.getName());
+        List<Standard> standards = standardService.findByName(model.getName());
         if (standards != null && standards.size() > 0) {
             ActionContext.getContext().getValueStack().push(false);
         } else {
@@ -69,47 +61,53 @@ public class StandardAction extends ActionSupport implements ModelDriven<Standar
         return SUCCESS;
     }
 
-
-    //属性驱动，获取当前页和当前页最多显示的记录数
-    private int page;
-    private int rows;
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
-
     /**
      * 分页查询
      *
-     * @return
+     * @return success
      */
     @Action(value = "standard_page", results = {@Result(type = "json")})
-    public String page() {
+    public String page() throws Exception {
         // 调用业务层 ，查询数据结果
         Pageable pageable = new PageRequest(page - 1, rows);//page从0开始
         Page<Standard> page = standardService.findPageData(pageable);
-
-        //返回客户端数据 需要 total 和 rows
-        Map<String, Object> map = new HashMap<>();
-        map.put("total", page.getTotalElements());
-        map.put("rows", page.getContent());
-
-        //将map转换为json数据返回 ，使用struts2-json-plugin 插件
-        ActionContext.getContext().getValueStack().push(map);
+        pushPageDataToValueStack(page);
         return SUCCESS;
     }
 
     /**
-     * 接收取派标准参数
+     * 查询所有
      *
-     * @return 取派标准实体
+     * @return success
+     * @throws Exception e
      */
-    @Override
-    public Standard getModel() {
-        return standard;
+    @Action(value = "standard_findAll", results = {@Result(type = "json")})
+    public String findAll() throws Exception {
+        List<Standard> standards = standardService.findAll();
+        ActionContext.getContext().getValueStack().push(standards);
+        return SUCCESS;
+    }
+
+    //接收参数ids
+    private String ids;
+
+    public void setIds(String ids) {
+        this.ids = ids;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @return success
+     * @throws Exception e
+     */
+    @Action(value = "standard_deleteByIds", results = {@Result(type = "redirect", location = "/pages/base/standard.html")})
+    public String deleteByIds() throws Exception {
+        //将ids("1,2,3,4")拆分成字符串数组
+        String[] arrId = ids.split(",");
+
+        standardService.deleteByIds(arrId);
+
+        return SUCCESS;
     }
 }

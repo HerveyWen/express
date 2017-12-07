@@ -151,4 +151,23 @@ public class TakeTime {
 		this.operatingCompany = operatingCompany;
 	}
 
+
+	@Override
+	public String toString() {
+		return "TakeTime{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", normalWorkTime='" + normalWorkTime + '\'' +
+				", normalDutyTime='" + normalDutyTime + '\'' +
+				", satWorkTime='" + satWorkTime + '\'' +
+				", satDutyTime='" + satDutyTime + '\'' +
+				", sunWorkTime='" + sunWorkTime + '\'' +
+				", sunDutyTime='" + sunDutyTime + '\'' +
+				", status='" + status + '\'' +
+				", company='" + company + '\'' +
+				", operatingTime=" + operatingTime +
+				", operator='" + operator + '\'' +
+				", operatingCompany='" + operatingCompany + '\'' +
+				'}';
+	}
 }

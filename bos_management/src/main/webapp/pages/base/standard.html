@@ -20,19 +20,29 @@
             // 先将body隐藏，再显示，不会出现页面刷新效果
             $("body").css({visibility: "visible"});
 
-            // 收派标准信息表格
+            // 调用后台standard_page.action，获取收派标准列表信息，填充表格4
             $('#grid').datagrid({
                 iconCls: 'icon-forward',
                 fit: true,
                 border: false,
                 rownumbers: true,
                 striped: true,
-                pageList: [30, 50, 100],
+                pageList: [3, 10, 30, 50, 100],
                 pagination: true,
                 toolbar: toolbar,
                 url: "../../standard_page.action",
                 idField: 'id',
                 columns: columns
+            });
+
+            //保存按钮点击，添加、或修改 表单提交
+            $("#save").click(function () {
+                if ($("#standard_saveForm").form("validate")) {
+
+                    $("#standard_saveForm").submit();
+                } else {
+                    $.messager.alert("警号", "表单校验失败，请检查", "warning");
+                }
             });
         });
 
@@ -43,7 +53,16 @@
             iconCls: 'icon-add',
             handler: function () {
                 // alert('增加');
+
+                // 重置表单
+                $("#standard_saveForm").get(0).reset();
+                // 隐藏域不能被清空，手动清空
+                $("input[name='id']").val("");
+                // 收派标准的名称设置为可写
+                $("input[name='name']").attr("readonly", false);
+                // 打开窗口
                 $("#standardWindow").window('open');
+
             }
         }, {
             id: 'button-edit',
@@ -57,6 +76,15 @@
                 if (rows.length != 1) {//如果所选中不是一条，弹出提示
                     $.messager.alert("提示信息", "修改数据，只能选择一行！", "warning");
                 } else {
+
+
+                    //对收派标准名称不设置remote校验（验证收派标准名称重复）
+                    $("input[name='name']").validatebox({
+                        validType: ''
+                    });
+                    // 收派标准的名称设置为只读
+                    $("input[name='name']").attr("readonly", true);
+
                     var row = rows[0];// 获取第一条数据
                     $("#standard_saveForm").form("load", row);
                     $("#standardWindow").window('open');
@@ -69,7 +97,20 @@
             text: '作废',
             iconCls: 'icon-cancel',
             handler: function () {
-                alert('作废');
+                var rows = $("#grid").datagrid("getSelections");
+                if (rows.length <= 0) {
+                    $.messager.alert("提示信息", "请选择删除的行！", "warning")
+                } else {
+                    // 选中数据
+                    // 获取选中所有id ，拼接字符串方法
+                    var ids = new Array();
+                    for (var i = 0; i < rows.length; i++) {
+                        ids.push(rows[i].id);
+                    }
+                    // 生成字符串，以逗号分隔
+                    ids.join(",");
+                    window.location.href = "../../standard_deleteByIds.action?ids=" + ids;
+                }
             }
         }];
 
@@ -118,19 +159,6 @@
             width: 120,
             align: 'center'
         }]];
-
-        $(function () {
-
-            //表单提交
-            $("#save").click(function () {
-                if ($("#standard_saveForm").form("validate")) {
-
-                    $("#standard_saveForm").submit();
-                } else {
-                    $.messager.alert("警号", "表单校验失败，请检查", "warning");
-                }
-            });
-        });
 
     </script>
 </head>

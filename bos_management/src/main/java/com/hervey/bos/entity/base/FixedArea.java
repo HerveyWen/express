@@ -24,113 +24,113 @@ import org.apache.struts2.json.annotations.JSON;
 @Table(name = "T_FIXED_AREA")
 public class FixedArea {
 
-	@Id
-	@Column(name = "C_ID")
-	private String id; // 主键
-	@Column(name = "C_FIXED_AREA_NAME", unique = true)
-	private String fixedAreaName; // 定区名称
-	@Column(name = "C_FIXED_AREA_LEADER", unique = true)
-	private String fixedAreaLeader;// 定区负责人
-	@Column(name = "C_TELEPHONE")
-	private String telephone;// 联系电话
-	@Column(name = "C_COMPANY")
-	private String company; // 所属单位
+    @Id
+    @Column(name = "C_ID")
+    private String id; // 主键
+    @Column(name = "C_FIXED_AREA_NAME", unique = true)
+    private String fixedAreaName; // 定区名称
+    @Column(name = "C_FIXED_AREA_LEADER", unique = true)
+    private String fixedAreaLeader;// 定区负责人
+    @Column(name = "C_TELEPHONE")
+    private String telephone;// 联系电话
+    @Column(name = "C_COMPANY")
+    private String company; // 所属单位
 
-	@Column(name = "C_OPERATING_TIME")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date operatingTime;// 操作时间
-	@Column(name = "C_OPERATOR")
-	private String operator; // 操作员
-	@Column(name = "C_OPERATING_COMPANY")
-	private String operatingCompany; // 操作单位
+    @Column(name = "C_OPERATING_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date operatingTime;// 操作时间
+    @Column(name = "C_OPERATOR")
+    private String operator; // 操作员
+    @Column(name = "C_OPERATING_COMPANY")
+    private String operatingCompany; // 操作单位
 
-	@OneToMany(mappedBy = "fixedArea")
-	private Set<SubArea> subareas = new HashSet<SubArea>(0);
+    @OneToMany(mappedBy = "fixedArea")
+    private Set<SubArea> subareas = new HashSet<SubArea>(0);
 
-	@ManyToMany
-	@JoinTable(name = "T_FIXEDAREA_COURIER", joinColumns = { @JoinColumn(name = "C_FIXED_AREA_ID", referencedColumnName = "C_ID") }, inverseJoinColumns = { @JoinColumn(name = "C_COURIER_ID", referencedColumnName = "C_ID") })
-	private Set<Courier> couriers = new HashSet<Courier>(0);
+    @ManyToMany
+    @JoinTable(name = "T_FIXEDAREA_COURIER", joinColumns = {@JoinColumn(name = "C_FIXED_AREA_ID", referencedColumnName = "C_ID")}, inverseJoinColumns = {@JoinColumn(name = "C_COURIER_ID", referencedColumnName = "C_ID")})
+    private Set<Courier> couriers = new HashSet<Courier>(0);
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getFixedAreaName() {
-		return fixedAreaName;
-	}
+    public String getFixedAreaName() {
+        return fixedAreaName;
+    }
 
-	public void setFixedAreaName(String fixedAreaName) {
-		this.fixedAreaName = fixedAreaName;
-	}
+    public void setFixedAreaName(String fixedAreaName) {
+        this.fixedAreaName = fixedAreaName;
+    }
 
-	public String getFixedAreaLeader() {
-		return fixedAreaLeader;
-	}
+    public String getFixedAreaLeader() {
+        return fixedAreaLeader;
+    }
 
-	public void setFixedAreaLeader(String fixedAreaLeader) {
-		this.fixedAreaLeader = fixedAreaLeader;
-	}
+    public void setFixedAreaLeader(String fixedAreaLeader) {
+        this.fixedAreaLeader = fixedAreaLeader;
+    }
 
-	public String getTelephone() {
-		return telephone;
-	}
+    public String getTelephone() {
+        return telephone;
+    }
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
-	public Date getOperatingTime() {
-		return operatingTime;
-	}
+    public Date getOperatingTime() {
+        return operatingTime;
+    }
 
-	public void setOperatingTime(Date operatingTime) {
-		this.operatingTime = operatingTime;
-	}
+    public void setOperatingTime(Date operatingTime) {
+        this.operatingTime = operatingTime;
+    }
 
-	public String getOperator() {
-		return operator;
-	}
+    public String getOperator() {
+        return operator;
+    }
 
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
 
-	@JSON(serialize = false)
-	public Set<SubArea> getSubareas() {
-		return subareas;
-	}
+    @JSON(serialize = false)
+    public Set<SubArea> getSubareas() {
+        return subareas;
+    }
 
-	public void setSubareas(Set<SubArea> subareas) {
-		this.subareas = subareas;
-	}
+    public void setSubareas(Set<SubArea> subareas) {
+        this.subareas = subareas;
+    }
 
-	@JSON(serialize = false)
-	public Set<Courier> getCouriers() {
-		return couriers;
-	}
+    @JSON(serialize = false)
+    public Set<Courier> getCouriers() {
+        return couriers;
+    }
 
-	public void setCouriers(Set<Courier> couriers) {
-		this.couriers = couriers;
-	}
+    public void setCouriers(Set<Courier> couriers) {
+        this.couriers = couriers;
+    }
 
-	public String getOperatingCompany() {
-		return operatingCompany;
-	}
+    public String getOperatingCompany() {
+        return operatingCompany;
+    }
 
-	public void setOperatingCompany(String operatingCompany) {
-		this.operatingCompany = operatingCompany;
-	}
+    public void setOperatingCompany(String operatingCompany) {
+        this.operatingCompany = operatingCompany;
+    }
 
-	public String getCompany() {
-		return company;
-	}
+    public String getCompany() {
+        return company;
+    }
 
-	public void setCompany(String company) {
-		this.company = company;
-	}
+    public void setCompany(String company) {
+        this.company = company;
+    }
 
 }
