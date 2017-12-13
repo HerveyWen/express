@@ -162,7 +162,7 @@ public class CourierAction extends BaseAction<Courier> {
     }
 
     /**
-     * 快递员假删除
+     * 快递员
      *
      * @return success
      * @throws Exception e
@@ -173,6 +173,37 @@ public class CourierAction extends BaseAction<Courier> {
             String[] idArr = ids.split(",");
             courierService.restoreBatch(idArr);
         }
+        return SUCCESS;
+    }
+
+    /**
+     * 查询未关联定区的快递员
+     *
+     * @return List<Courier> -> json
+     * @throws Exception e
+     */
+    @Action(value = "courier_findnoassociation", results = {@Result(type = "json")})
+    public String findnoassociation() throws Exception {
+        List<Courier> couriers = courierService.findNoAssociation();
+        ActionContext.getContext().getValueStack().push(couriers);
+        return SUCCESS;
+    }
+
+    // 分区ID
+    private String fixedAreaId;
+
+    public void setFixedAreaId(String fixedAreaId) {
+        this.fixedAreaId = fixedAreaId;
+    }
+
+    /**
+     * 查询指定分区关联的快递员 列表
+     */
+    @Action(value = "courier_findAssociationCourier", results = {@Result(type = "json")})
+    public String findAssociationCourier() {
+        // 调用业务层，查询关联快递员 列表
+        List<Courier> couriers = courierService.findAssociationCourier(fixedAreaId);
+        ActionContext.getContext().getValueStack().push(couriers);
         return SUCCESS;
     }
 

@@ -16,6 +16,7 @@
     <script src="../../js/easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
     <script type="text/javascript">
 
+        /**添加定区弹出窗口*/
         function doAdd() {
             $('#addWindow').window("open");
         }
@@ -32,8 +33,48 @@
             $('#searchWindow').window("open");
         }
 
+        /**关联客户弹出窗口*/
         function doAssociations() {
-            $('#customerWindow').window('open');
+            var rows = $("#grid").datagrid("getSelections");
+            //只选择了1行数据
+            if (rows.length == 1) {
+
+                // 打开定区关联客户窗口
+                $('#customerWindow').window('open');
+
+                //将选中的定区ID，设置到隐藏域中，用关联的时候使用
+                $("#customerFixedAreaId").val(rows[0].id);
+
+                //显示等待进度条
+                $.messager.progress({
+                    interval: 500//每0.5 秒增加10%
+                });
+
+                // 发起Ajax请求，查询所有 未关联定区客户列表
+                $.post("../../fixedArea_findNoAssociationCustomers.action", function (data) {
+                    $("#noassociationSelect").html("");
+                    $(data).each(function () {
+                        var option = "<option value='" + this.id + "'>" + this.address + "</option>"
+                        $("#noassociationSelect").append(option);
+
+                        $.messager.progress("close");//关闭进度条
+                    });
+                });
+                // 发起Ajax请求，查询所有 关联当前选中定区客户列表
+                $.post("../../fixedArea_findHasAssociationCustomers.action", {id: rows[0].id}, function (data) {
+                    $("#associationSelect").empty();
+                    $(data).each(function () {
+                        var option = "<option value='" + this.id + "'>" + this.address + "</option>"
+                        $("#associationSelect").append(option);
+
+                        $.messager.progress("close");//关闭进度条
+                    });
+                });
+
+
+            } else {
+                $.messager.alert("警告", "定区关联客户必须（只能）选择一个定区", "warning");
+            }
         }
 
         //工具栏
@@ -71,6 +112,10 @@
                 var rows = $("#grid").datagrid('getSelections');
                 if (rows.length == 1) {
                     // 只选择了一个定区
+
+                    // 保存选中的定区ID，到隐藏域的字段
+                    $("#courierFixedAreaId").val(rows[0].id);
+
                     // 弹出定区关联快递员 窗口
                     $("#courierWindow").window('open');
                 } else {
@@ -208,10 +253,42 @@
 
             });
 
+            /**
+             * 关联客户保存
+             */
+            $("#associationBtn").click(function () {
+
+                if ($("#customerForm").form("validate")) {
+                    alert($("#customerFixedAreaId").val())
+                    $("#associationSelect option").attr("selected", "selected");//选中select下的所有option
+                    $("#customerForm").submit();
+                } else {
+                    $.messager.alert("警告", "表单中存在非法数据", "warning");
+                }
+            });
+
+            /**
+             * 点击关联快递员按钮
+             */
+            $("#associationCourierBtn").click(function () {
+                // 判断表单是否通过校验
+                if ($("#courierForm").form("validate")) {
+                    $("#courierForm").submit();
+                } else {
+                    $.messager.alert("警告", "表单中存在非法数据", "warning");
+                }
+            });
+
+
         });
 
-        function doDblClickRow() {
-            alert("双击表格数据...");
+        /**
+         * 双击表格行事件
+         */
+        function doDblClickRow(rowIndex, rowData) {
+            alert("双击表格数据...rowIndex: " + rowIndex + "  row_id: " + rowData.id);
+            var id = rowData.id;
+            //关联分区列表显示
             $('#association_subarea').datagrid({
                 fit: true,
                 border: true,
@@ -283,6 +360,7 @@
                     align: 'center'
                 }]]
             });
+            //关联快递员列表显示
             $('#association_customer').datagrid({
                 fit: true,
                 border: true,
@@ -306,12 +384,13 @@
                     align: 'center'
                 }]]
             });
+            //关联快递员列表显示
             $('#association_courier').datagrid({
                 fit: true,
                 border: true,
                 rownumbers: true,
                 striped: true,
-                url: "../../data/courier.json",
+                url: "../../courier_findAssociationCourier.action?fixedAreaId=" + id, // id传递定区ID
                 columns: [[{
                     field: 'id',
                     title: '编号',

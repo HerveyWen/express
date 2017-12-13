@@ -11,4 +11,6 @@ public interface FixedAreaService {
     void save(FixedArea model);
 
     Page<FixedArea> findPageByCondition(Specification<FixedArea> specification, Pageable page);
+
+    void associationCourierToFixedArea(String id, Integer courierId, Integer takeTimeId);
 }

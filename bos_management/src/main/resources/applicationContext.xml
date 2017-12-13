@@ -36,7 +36,11 @@
         <!-- 注入数据源 -->
         <property name="dataSource" ref="dataSource"/>
         <!-- 实体包扫描，扫描存放实体PO类的包路径 -->
-        <property name="packagesToScan" value="com.hervey.bos.entity"/>
+        <property name="packagesToScan">
+            <list>
+                <value>com.hervey.bos.entity</value>
+            </list>
+        </property>
         <!-- 持久化的供应商类，固定写法 -->
         <property name="persistenceProvider">
             <bean class="org.hibernate.jpa.HibernatePersistenceProvider"/>

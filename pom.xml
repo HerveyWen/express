@@ -9,6 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>bos_management</module>
+        <module>crm_management</module>
+        <module>crm_entity</module>
+        <module>bos_entity</module>
+        <module>bos_fore</module>
     </modules>
     <packaging>pom</packaging>
     <name>express</name>

@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>express</artifactId>
+        <groupId>com.hervey</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>bos_fore</artifactId>
+    <packaging>war</packaging>
+    <name>bos_fore</name>
+    <description>bos前端系统</description>
+    <dependencies>
+    </dependencies>
+    <build>
+        <finalName>bos_fore</finalName>
+    </build>
+</project>

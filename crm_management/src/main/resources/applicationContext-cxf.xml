@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+    <!-- 服务端 -->
+    <jaxrs:server id="customerService" address="/customerService">
+        <jaxrs:serviceBeans>
+            <bean class="com.hervey.crm.service.impl.CustomerServiceImpl"/>
+        </jaxrs:serviceBeans>
+        <!-- 输入消息拦截器-->
+        <jaxrs:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </jaxrs:inInterceptors>
+        <!-- 输出消息拦截器-->
+        <jaxrs:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </jaxrs:outInterceptors>
+    </jaxrs:server>
+</beans>

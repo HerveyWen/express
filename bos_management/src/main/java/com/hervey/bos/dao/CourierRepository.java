@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 /**
  * 快递员dao层
  * Created on 2017/12/6.
@@ -22,4 +24,8 @@ public interface CourierRepository extends JpaRepository<Courier, Integer>, JpaS
     @Query(value = "update Courier set deltag = '' where id = ?1")
     @Modifying
     void restoreCourier(Integer id);
+
+    @Query(value = "from Courier c inner join fetch c.fixedAreas f where f.id = ?")
+    @Modifying
+    List<Courier> findAssociationCourier(String fixedAreaId);
 }
