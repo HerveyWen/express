@@ -20,4 +20,8 @@
     <!-- 加载properties文件 -->
     <context:property-placeholder location="classpath:config.properties"/>
 
+    <!-- 加载外部的spring容器文件，引入redis配置 -->
+    <import resource="applicationContext-redis.xml"/>
+
+
 </beans>

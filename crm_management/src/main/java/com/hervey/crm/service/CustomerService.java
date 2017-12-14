@@ -31,4 +31,25 @@ public interface CustomerService {
     @PUT
     @Consumes(value = {"application/json", "application/xml"})
     void associationCustomersToFixedArea(@QueryParam("customerIdStr") String customerIdStr, @QueryParam("fixedAreaId") String fixedAreaId);
+
+    //注册
+    @Path("/register")
+    @POST
+    @Consumes(value = {"application/json", "application/xml"})
+    void register(Customer customer);
+
+
+    //使用电话号查询唯一的客户对象
+    @Path("/customer/telephone/{telephone}")
+    @GET
+    @Consumes({"application/xml", "application/json"})
+    @Produces({"application/xml", "application/json"})
+    public Customer findByTelephone(@PathParam("telephone") String telephone);
+
+    //使用电话号作为条件，更新type的值为1，表示激活
+    @Path("/customer/updatetype/{telephone}")
+    @PUT
+    @Consumes({"application/xml", "application/json"})
+    public void updateType(@PathParam("telephone") String telephone);
+
 }

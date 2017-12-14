@@ -14,8 +14,8 @@ public class Constants {
     public static final String BOS_SMS_HOST = "http://localhost:8080";
     public static final String BOS_MAIL_HOST = "http://localhost:8080";
 
-    private static final String BOS_MANAGEMENT_CONTEXT = "/bos";
-    private static final String CRM_MANAGEMENT_CONTEXT = "/crm";
+    private static final String BOS_MANAGEMENT_CONTEXT = "/bos_management";
+    private static final String CRM_MANAGEMENT_CONTEXT = "/crm_management";
     private static final String BOS_FORE_CONTEXT = "/bos_fore";
     private static final String BOS_SMS_CONTEXT = "/bos_sms";
     private static final String BOS_MAIL_CONTEXT = "/bos_mail";

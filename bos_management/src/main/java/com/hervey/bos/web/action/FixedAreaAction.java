@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * 定区action
+ */
 
 @ParentPackage(value = "json-default")
 @Namespace("/")

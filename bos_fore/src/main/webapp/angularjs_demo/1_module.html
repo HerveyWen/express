@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="../js/angular.min.js"></script>
+</head>
+<body>
+<div ng-app="myapp" ng-controller="myController">
+    用户名: <input ng-model="name">
+</div>
+<script>
+    var app = angular.module('myapp', []);
+    app.controller('myController', function ($scope) {
+        $scope.name = "Testaaa";
+    });
+</script>
+</body>
+</html>

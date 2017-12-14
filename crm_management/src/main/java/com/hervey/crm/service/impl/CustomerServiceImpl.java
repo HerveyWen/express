@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author hervey
  */
-@Service
+@Service("customerService")
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
 
@@ -64,5 +64,37 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
 
+    }
+
+    /**
+     * 注册，添加用户到表中
+     *
+     * @param customer
+     */
+    @Override
+    public void register(Customer customer) {
+        customerRepository.save(customer);
+    }
+
+    /**
+     * 使用电话号查询唯一的客户对象
+     *
+     * @param telephone telephone
+     * @return customer
+     */
+    @Override
+    public Customer findByTelephone(String telephone) {
+        return customerRepository.findByTelephone(telephone);
+    }
+
+    /**
+     * //使用电话号作为条件，更新type的值为1，表示激活
+     *
+     * @param telephone telephone
+     */
+    @Override
+    public void updateType(String telephone) {
+        System.out.println(telephone);
+        customerRepository.updateType(telephone);
     }
 }
